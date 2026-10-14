@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehiculos - AlquilaYa</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>AlquilaYa</h1>
+        <nav>
+            <a href="/oficinas">Oficinas</a>
+            <a href="/vehiculos">Vehiculos</a>
+            <a href="/clientes">Clientes</a>
+            <a href="/alquileres">Alquileres</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Vehiculos</h2>
+        <p class="error" th:if="${error}" th:text="${error}"></p>
+
+        <form action="/vehiculos" method="post">
+            <h3>Nuevo vehiculo</h3>
+            <label>Matricula <input type="text" name="matricula" required></label>
+            <label>Marca <input type="text" name="marca" required></label>
+            <label>Modelo <input type="text" name="modelo" required></label>
+            <label>Anio <input type="number" name="anio" required></label>
+            <label>Tarifa diaria <input type="number" name="tarifaDiaria" step="0.01" min="1" required></label>
+            <label>Oficina
+                <select name="idOficina" required>
+                    <option th:each="o : ${oficinas}" th:value="${o.idOficina}" th:text="${o.nombre}"></option>
+                </select>
+            </label>
+            <button type="submit">Guardar</button>
+        </form>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Matricula</th>
+                <th>Marca</th>
+                <th>Modelo</th>
+                <th>Anio</th>
+                <th>Tarifa</th>
+                <th>Oficina</th>
+                <th>Estado</th>
+                <th></th>
+            </tr>
+            <tr th:each="v : ${vehiculos}">
+                <td th:text="${v.idVehiculo}"></td>
+                <td th:text="${v.matricula}"></td>
+                <td th:text="${v.marca}"></td>
+                <td th:text="${v.modelo}"></td>
+                <td th:text="${v.anio}"></td>
+                <td th:text="${v.tarifaDiaria}"></td>
+                <td th:text="${v.oficina != null} ? ${v.oficina.nombre} : ''"></td>
+                <td th:text="${v.estado}"></td>
+                <td>
+                    <form th:action="@{/vehiculos/{id}/borrar(id=${v.idVehiculo})}" method="post">
+                        <button type="submit" class="borrar">Borrar</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </main>
+</body>
+</html>

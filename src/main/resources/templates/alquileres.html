@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alquileres - AlquilaYa</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>AlquilaYa</h1>
+        <nav>
+            <a href="/oficinas">Oficinas</a>
+            <a href="/vehiculos">Vehiculos</a>
+            <a href="/clientes">Clientes</a>
+            <a href="/alquileres">Alquileres</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Alquileres</h2>
+        <p class="error" th:if="${error}" th:text="${error}"></p>
+
+        <form action="/alquileres" method="post">
+            <h3>Nuevo alquiler</h3>
+            <label>Cliente
+                <select name="idCliente" required>
+                    <option th:each="c : ${clientes}" th:value="${c.idCliente}" th:text="${c.nombre + ' ' + c.apellido}"></option>
+                </select>
+            </label>
+            <label>Vehiculo
+                <select name="idVehiculo" required>
+                    <option th:each="v : ${vehiculos}" th:value="${v.idVehiculo}" th:text="${v.marca + ' ' + v.modelo + ' (' + v.matricula + ')'}"></option>
+                </select>
+            </label>
+            <label>Fecha de alquiler <input type="date" name="fechaAlquiler" required></label>
+            <label>Fecha de devolucion <input type="date" name="fechaDevolucion" required></label>
+            <label>Precio total <input type="number" name="precioTotal" step="0.01" min="1" required></label>
+            <button type="submit">Guardar</button>
+        </form>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Vehiculo</th>
+                <th>Desde</th>
+                <th>Hasta</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+            <tr th:each="a : ${alquileres}">
+                <td th:text="${a.idAlquiler}"></td>
+                <td th:text="${a.cliente.nombre + ' ' + a.cliente.apellido}"></td>
+                <td th:text="${a.vehiculo.marca + ' ' + a.vehiculo.modelo}"></td>
+                <td th:text="${a.fechaAlquiler}"></td>
+                <td th:text="${a.fechaDevolucion}"></td>
+                <td th:text="${a.precioTotal}"></td>
+                <td>
+                    <form th:action="@{/alquileres/{id}/borrar(id=${a.idAlquiler})}" method="post">
+                        <button type="submit" class="borrar">Devolver</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </main>
+</body>
+</html>

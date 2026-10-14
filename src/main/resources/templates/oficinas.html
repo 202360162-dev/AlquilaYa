@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oficinas - AlquilaYa</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>AlquilaYa</h1>
+        <nav>
+            <a href="/oficinas">Oficinas</a>
+            <a href="/vehiculos">Vehiculos</a>
+            <a href="/clientes">Clientes</a>
+            <a href="/alquileres">Alquileres</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Oficinas</h2>
+        <p class="error" th:if="${error}" th:text="${error}"></p>
+
+        <form action="/oficinas" method="post">
+            <h3>Nueva oficina</h3>
+            <label>Nombre <input type="text" name="nombre" required></label>
+            <label>Direccion <input type="text" name="direccion" required></label>
+            <label>Ciudad <input type="text" name="ciudad" required></label>
+            <label>Region <input type="text" name="region" required></label>
+            <button type="submit">Guardar</button>
+        </form>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Direccion</th>
+                <th>Ciudad</th>
+                <th>Region</th>
+                <th></th>
+            </tr>
+            <tr th:each="o : ${oficinas}">
+                <td th:text="${o.idOficina}"></td>
+                <td th:text="${o.nombre}"></td>
+                <td th:text="${o.direccion}"></td>
+                <td th:text="${o.ciudad}"></td>
+                <td th:text="${o.region}"></td>
+                <td>
+                    <form th:action="@{/oficinas/{id}/borrar(id=${o.idOficina})}" method="post">
+                        <button type="submit" class="borrar">Borrar</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </main>
+</body>
+</html>

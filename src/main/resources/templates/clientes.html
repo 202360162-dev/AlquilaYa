@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clientes - AlquilaYa</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>AlquilaYa</h1>
+        <nav>
+            <a href="/oficinas">Oficinas</a>
+            <a href="/vehiculos">Vehiculos</a>
+            <a href="/clientes">Clientes</a>
+            <a href="/alquileres">Alquileres</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Clientes</h2>
+        <p class="error" th:if="${error}" th:text="${error}"></p>
+
+        <form action="/clientes" method="post">
+            <h3>Nuevo cliente</h3>
+            <label>Nombre <input type="text" name="nombre" required></label>
+            <label>Apellido <input type="text" name="apellido" required></label>
+            <label>Email <input type="email" name="email" required></label>
+            <label>Telefono <input type="text" name="telefono"></label>
+            <label>Licencia <input type="text" name="licenciaConducir" required></label>
+            <button type="submit">Guardar</button>
+        </form>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Telefono</th>
+                <th>Licencia</th>
+                <th></th>
+            </tr>
+            <tr th:each="c : ${clientes}">
+                <td th:text="${c.idCliente}"></td>
+                <td th:text="${c.nombre + ' ' + c.apellido}"></td>
+                <td th:text="${c.email}"></td>
+                <td th:text="${c.telefono}"></td>
+                <td th:text="${c.licenciaConducir}"></td>
+                <td>
+                    <form th:action="@{/clientes/{id}/borrar(id=${c.idCliente})}" method="post">
+                        <button type="submit" class="borrar">Borrar</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    </main>
+</body>
+</html>
